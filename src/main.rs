@@ -7,18 +7,17 @@ use std::io;
 pub fn make_app() -> App<'static, 'static> {
     App::new("nop-processor")
         .about("Why tf are all the preprocessors failing")
-        .subcommand(SubCommand::with_name("supports")
-            .arg(Arg::with_name("renderer").required(true))
-            .about("Check whether a renderer is supported by this preprocessor")
+        .subcommand(
+            SubCommand::with_name("supports")
+                .arg(Arg::with_name("renderer").required(true))
+                .about("Check whether a renderer is supported by this preprocessor"),
         )
 }
 
 pub struct NopPreprocessor;
 
 fn handle_supports(pre: &dyn Preprocessor, sub_args: &ArgMatches) -> Result<(), Error> {
-    let renderer = sub_args
-        .value_of("renderer")
-        .expect("Required argument");
+    let renderer = sub_args.value_of("renderer").expect("Required argument");
     let supported = pre.supports_renderer(&renderer);
     if supported {
         Ok(())
